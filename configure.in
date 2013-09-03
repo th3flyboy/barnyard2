@@ -616,6 +616,15 @@ if test "x$with_mysql" != "xno"; then
           fi
         done
       fi
+      if test -z "$MYSQL_LIB_DIR"; then
+        str="$i/lib/x86_64-linux-gnu/libmysqlclient.*"
+        for j in `echo $str`; do
+          if test -r "$j"; then
+            MYSQL_LIB_DIR="$i/lib/x86_64-linux-gnu"
+            break 2
+          fi
+        done
+      fi
   done
 
   if test -z "$MYSQL_INC_DIR"; then
@@ -634,7 +643,7 @@ if test "x$with_mysql" != "xno"; then
       if test "x$mysql_fail" != "xno"; then
         tmp=""
         for i in $mysql_lib_directory; do
-          tmp="$tmp $i $i/lib $i/mysql $i/mysql/lib $i/lib/mysql"
+          tmp="$tmp $i $i/lib $i/mysql $i/mysql/lib $i/lib/mysql $i/lib/x86_64-linux-gnu"
         done
         FAIL_MESSAGE("mysqlclient library (libmysqlclient.*)", $tmp)
       else
